@@ -33,14 +33,24 @@ var chartT = new Highcharts.Chart({
         var x = (new Date()).getTime(),
             y = parseFloat(this.responseText);
         //console.log(this.responseText);
-        if(chartT.series[0].data.length > 40) {
-          chartT.series[0].addPoint([x, y], true, true, true);
-        } else {
-          chartT.series[0].addPoint([x, y], true, false, true);
-        }
+        chartT.series[0].addPoint([x, y], true, false, true);
+        chartT.series[1].addPoint([x, y], true, false, true);
+      //console.log(this.responseText);
+      /*if (chartT.series[0].data.length > 40) {
+        chartT.series[0].addPoint([x, y], true, true, true);
+      } else {
+        chartT.series[0].addPoint([x, y], true, false, true);
+      }
+      if (chartT.series[1].data.length > 40) {
+        chartT.series[1].addPoint([x, y], true, true, true);
+      } else {
+        chartT.series[1].addPoint([x, y], true, false, true);
+      }*/
       }
     };
-    xhttp.open("GET", "http://"+window.location.hostname+"/temperature", true);
+    //xhttp.open("GET", "http://"+window.location.hostname+"/temperature", true);
+    
+    xhttp.open("GET", "http://"+"192.168.181.131"+"/temperature", true);
     xhttp.send();
   }, 1000 ) ;
   

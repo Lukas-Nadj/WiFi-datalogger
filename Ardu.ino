@@ -7,8 +7,8 @@ ESP8266WebServer server(80);
 void setup() {
   Serial.begin(115200);
   //WiFi.begin("EUC-iOT-HTX", "iOTeucHTX"); //Connect to the WiFi network
-  //WiFi.begin("Hdæw", "12345678");
-  WiFi.begin("Telenor4053myk", "kIcob7jr4");
+  WiFi.begin("Hdæw", "12345678");
+  //WiFi.begin("Telenor4053myk", "kIcob7jr4");
   checkwificonnection();
   server.enableCORS(true);
 }
@@ -18,7 +18,7 @@ void loop() {
   server.handleClient(); 
 }
 void temperatur(){
-  server.send(200, "text/html", "123");
+  server.send(200, "text/html", String(analogRead(A0)/320.0, 5));
 }
 void handleRoot(){
   String page="";
