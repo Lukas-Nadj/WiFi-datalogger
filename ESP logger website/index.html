@@ -112,9 +112,9 @@
         <div class="grid">
             <div class="box">
                 <form action="Voltmeter/voltage.html">
-                    <input type="number" name="Frekvens" id="" value="1000" required> Frekvens <br>
-                    <input type="number" name="Punkter" id="" value="1000"> Hvor mange gemter punkter? <br>
-                    <input type="text" name="Destination" id="" value="fuckall" required> Destination <br>
+                    <input type="number" name="Frekvens" id="" value="1.0" min="0.0" max="10.0" step="any" required> Frekvens i Hz<br>
+                    <input type="number" name="Punkter" id="" value="500"> Hvor mange gemter punkter? <br>
+                    <input type="text" name="Destination" id="source" value="esp8266.local" required> Destination <br>
                     <select name="Sensore" id="sensor" required>
                         <option value="V+A">Volt+Ampere meter</option>
                         <option value="P">Tryksensor</option>
@@ -124,7 +124,5 @@
                     <input type="submit" value="Submit">
                 </form>
             </div>
-            
-            <script src="index.js"></script>
         </div>
     </body>

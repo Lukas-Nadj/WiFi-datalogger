@@ -1,9 +1,12 @@
+#include "circ_buff.h"
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>  // Include the mDNS library
 
 ESP8266WebServer server(80);
 int timer = 0;
+circ_buff<float> buffer();
+
 
 void setup() {
   Serial.begin(115200);
@@ -33,6 +36,11 @@ void loop() {
   server.handleClient();
 }
 void temperatur() {
+  server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
+}
+
+void voltage() {
+
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
 void handleRoot() {
@@ -221,7 +229,7 @@ void checkwificonnection() {
     Serial.println(WiFi.localIP());
     server.on("/", handleRoot);
     server.on("/temperature", temperatur);
-    server.on("/voltage", temperatur);
+    server.on("/voltage", voltage);
     //server.on("/voltage", temperatur);
     server.begin();
   }

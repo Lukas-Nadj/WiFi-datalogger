@@ -20,38 +20,41 @@ var chartT = new Highcharts.Chart({
   xAxis: { type: "datetime", dateTimeLabelFormats: { second: "%H:%M:%S" } },
   yAxis: {
     title: { text: "Temperature (Celsius)" },
+    min: 0
     //title: { text: 'Temperature (Fahrenheit)' }
   },
   credits: { enabled: false },
 });
-const queryString = window.location.search; // "?param1=value1&param2=value2"
-const params = new URLSearchParams(queryString);
-const param1 = params.get("Frekvens"); // "value1"
+
+
+let queryString = window.location.search; // "?param1=value1&param2=value2"
+let params = new URLSearchParams(queryString);
+let Frekvens = params.get("Frekvens"); // "value1"
+let Punkter = params.get("Punkter"); // "value1"
 setInterval(function () {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var x = new Date().getTime(),
         y = parseFloat(this.responseText);
-        chartT.series[0].addPoint([x, y], true, false, true);
-        chartT.series[1].addPoint([x, y], true, false, true);
+  
       //console.log(this.responseText);
-      /*if (chartT.series[0].data.length > 40) {
+      if (chartT.series[0].data.length > Punkter) {
         chartT.series[0].addPoint([x, y], true, true, true);
       } else {
         chartT.series[0].addPoint([x, y], true, false, true);
       }
-      if (chartT.series[1].data.length > 40) {
+      if (chartT.series[1].data.length > Punkter) {
         chartT.series[1].addPoint([x, y], true, true, true);
       } else {
         chartT.series[1].addPoint([x, y], true, false, true);
-      }*/
+      }
     }
   };
   //xhttp.open("GET", "http://"+window.location.hostname+"/temperature", true);
-  xhttp.open("GET", "http://"+"192.168.181.131" + "/temperature", true);
+  xhttp.open("GET", "http://"+document.getElementById("source").value+ "/temperature", true);
   xhttp.send();
-}, param1);
+}, (1.0/Frekvens)*1000);
 document.getElementById("download").addEventListener("click", function() {
   download(chartT.getCSV());
 });

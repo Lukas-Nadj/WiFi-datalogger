@@ -105,17 +105,18 @@
       return false;
     }
   </script>
+   
 </head>
 
 <body>
   <div class="grid">
     <div class="box">
-      <form onsubmit="return redirect()">
-        <input type="number" name="Frekvens" id="" value="1000" required />
-        Frekvens <br />
-        <input type="number" name="Punkter" id="" value="1000" /> Hvor mange
+      <form>
+        <input type="number" name="Frekvens" id="frekvens" value="1.0" min="0.0" max="10.0" step="any" required />
+        Frekvens i Hz<br />
+        <input type="number" name="Punkter" id="punkter" value="500" /> Hvor mange
         gemter punkter? <br />
-        <input type="text" name="Destination" id="" value="fuckall" required />
+        <input type="text" name="Destination" id="source" value="esp8266.local" required />
         Destination <br />
         <select name="Sensore" id="sensor" required>
           <option value="V+A">Volt+Ampere meter</option>
@@ -125,13 +126,24 @@
         </select>
         Sensor <br />
         <button id="download" type="button">Download</button>
-        <input type="submit" value="Nyt forløb" />
+        <input type="submit" value="Nyt forløb"
+          onclick="return confirm('hvis du starter et nyt forløb mister du alt data, er du sikker på at du vil fortsætte?')" />
       </form>
-      
     </div>
     <div class="chart">
       <div id="chart-temperature" class="container"></div>
     </div>
+   
     <script src="index.js"></script>
+    <script defer>
+      let url = window.location.search;
+      let args = new URLSearchParams(url);
+      let frek = args.get("Frekvens"); // "value1"
+      let punk = args.get("Punkter"); // "value1"
+      let dest = args.get("Destination"); // "value1"
+      document.getElementById("frekvens").value = frek;
+      document.getElementById("punkter").value = punk;
+      document.getElementById("source").value = dest;
+    </script>
   </div>
 </body>
