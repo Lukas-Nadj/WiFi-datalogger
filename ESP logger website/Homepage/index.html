@@ -17,7 +17,7 @@
 
     .bod {
       font-family: Arial, Helvetica, sans-serif;
-      
+
     }
 
     .grid {
@@ -39,18 +39,20 @@
       justify-content: left;
       gap: 13px;
       align-items: center;
-      width: 54px;
+      width: 42px;
       height: 100vh;
       padding: 10px;
       transition: width .25s ease-in-out;
     }
 
+
     .nav:hover {
       width: 317px;
       padding: 5px;
       padding-top: 10px;
-      transition: all .25s ease-in-out;
+      transition: all .2s ease-in-out;
     }
+
 
     .nav .text {
       visibility: hidden;
@@ -124,13 +126,25 @@
       color: #ABCAE7;
       -webkit-text-fill-color: #ABCAE7;
     }
+
+    hr {
+      width: 35px;
+      border-top: 2px solid #737373;
+      transition: all .2s ease-in-out;
+    }
+
+    .nav:hover hr {
+      width: 230px;
+      transition: all .2s ease-in-out;
+    }
   </style>
 </head>
 
 <body>
   <div class="grid">
     <div class="nav">
-      <div class="card">
+
+      <div onclick="window.location.href = '../index.html';" class="card">
         <h3 class="text">Start nyt forsøg</h3>
         <p class="logo" style="font-size:XX-large;">+</p>
       </div>
@@ -144,8 +158,26 @@
           </svg>
         </div>
       </div>
+      <hr>
       <div class="card">
         <h3 class="text">Forbind til datalogger</h3>
+        <div class="logo" style="width:100px; height: 100px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-9.4 -9.4 82.8 82.8" aria-labelledby="title" aria-describedby="desc"
+            role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Wifi</title>
+            <desc>A solid styled icon from Orion Icon Library.</desc>
+            <path data-name="layer2"
+              d="M32 46.766a6.08 6.08 0 0 0-4.481 1.976 1 1 0 0 0 .024 1.375l3.743 3.817a1 1 0 0 0 1.427 0l3.744-3.817a1 1 0 0 0 .024-1.375A6.085 6.085 0 0 0 32 46.766zm-13.573-6.915l3.951 4.515a14.616 14.616 0 0 1 19.243 0l3.952-4.515a20.616 20.616 0 0 0-27.146 0z"
+              fill="#202020"></path>
+            <path data-name="layer1"
+              d="M10.168 30.407l3.954 4.514a27.162 27.162 0 0 1 35.759.002l3.952-4.515a33.163 33.163 0 0 0-43.665-.001z"
+              fill="#202020"></path>
+            <path data-name="layer1"
+              d="M32 9.766A45.566 45.566 0 0 0 1.98 21.041l3.951 4.515a39.603 39.603 0 0 1 52.136-.001l3.951-4.516A45.567 45.567 0 0 0 32 9.766z"
+              fill="#202020"></path>
+          </svg>
+
+        </div>
       </div>
     </div>
     <div class="bod">
@@ -171,9 +203,12 @@
       </ul>
       <h2 style="font-weight: lighter;">Problemer med at forbinde?</h2>
       <p>Hvis du er forbundet på:</p>
-      <p style="-webkit-text-fill-color: #ABCAE7";>esp8266-x.local</p>
+      <p style="-webkit-text-fill-color: #ABCAE7" ;>esp8266-x.local</p>
       <ul style="color:#FFFFFF;">
-        <li>Lokale domæner (mdns) er en tilbygning på de standard https dns resolutioner, hvor computeren ikke kender Dataloggeren's ip, men at Dataloggeren broadcaster sig selv som det lokale domæne navn. men den her protocol er kun tilgængelige på computer.<br><br> Tl;dr - det virker kun på visse browsere og devices (Mobiltelefon virker ikke)</li>
+        <li>Lokale domæner (mdns) er en tilbygning på de standard https dns resolutioner, hvor computeren ikke kender
+          Dataloggeren's ip, men at Dataloggeren broadcaster sig selv som det lokale domæne navn. men den her protocol
+          er kun tilgængelige på computer.<br><br> Tl;dr - det virker kun på visse browsere og devices (Mobiltelefon
+          virker ikke)</li>
       </ul>
     </div>
 </body>
