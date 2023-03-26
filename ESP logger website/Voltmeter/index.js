@@ -1,15 +1,33 @@
 var chartT = new Highcharts.Chart({
-  chart: { renderTo: "chart-temperature" },
+  chart: {
+    renderTo: "chart-temperature",
+    zoomType: "xy",
+    panning: {
+      enabled: true,
+      type: "xy",
+    },
+    panKey: "shift",
+  },
+  boost: {
+    useGPUTranslations: true,
+    // Chart-level boost when there are more than 5 series in the chart
+    seriesThreshold: 5,
+  },
   title: { text: "DataGraf" },
+
   series: [
     {
+      boostThreshold: 10,
       showInLegend: true,
       name: "Voltage",
+      lineColor: "#A4A519",
       data: [],
     },
     {
+      boostThreshold: 10,
       showInLegend: true,
       name: "Amperes",
+      lineColor: "#FF3B25",
       data: [],
     },
   ],
@@ -19,13 +37,13 @@ var chartT = new Highcharts.Chart({
   },
   xAxis: { type: "datetime", dateTimeLabelFormats: { second: "%H:%M:%S" } },
   yAxis: {
-    title: { text: "Temperature (Celsius)" },
-    min: 0
+    title: { text: "Voltage" + " " + "Amperes" },
+    min: 0,
+    minRange: 0.5,
     //title: { text: 'Temperature (Fahrenheit)' }
   },
   credits: { enabled: false },
 });
-
 
 let queryString = window.location.search; // "?param1=value1&param2=value2"
 let params = new URLSearchParams(queryString);
@@ -37,7 +55,7 @@ setInterval(function () {
     if (this.readyState == 4 && this.status == 200) {
       var x = new Date().getTime(),
         y = parseFloat(this.responseText);
-  
+
       //console.log(this.responseText);
       if (chartT.series[0].data.length > Punkter) {
         chartT.series[0].addPoint([x, y], true, true, true);
@@ -49,13 +67,29 @@ setInterval(function () {
       } else {
         chartT.series[1].addPoint([x, y], true, false, true);
       }
+      let a = document.getElementById("frekvens").value;
+      let b = document.getElementById("punkter").value;
+      document.getElementById("tid").innerHTML =
+        parseInt(((1.0 / a) * b) / 60.0) +
+        " minutter og " +
+        (parseInt(1.0 * (1.0 / a) * b) % 60) +
+        " sekunder";
+      document.getElementById("remain").innerHTML =
+        parseInt((1.0 * (1.0 / a) * (b - chartT.series[0].data.length)) / 60) +
+        " minutter og " +
+        (parseInt(1.0 * (1.0 / a) * (b - chartT.series[0].data.length)) % 60) +
+        " sekunder";
     }
   };
   //xhttp.open("GET", "http://"+window.location.hostname+"/temperature", true);
-  xhttp.open("GET", "http://"+document.getElementById("source").value+ "/temperature", true);
+  xhttp.open(
+    "GET",
+    "http://" + document.getElementById("source").value + "/temperature",
+    true
+  );
   xhttp.send();
-}, (1.0/Frekvens)*1000);
-document.getElementById("download").addEventListener("click", function() {
+}, (1.0 / Frekvens) * 1000);
+document.getElementById("download").addEventListener("click", function () {
   download(chartT.getCSV());
 });
 function download(data) {
@@ -78,6 +112,4 @@ function download(data) {
 
   // Performing a download with click
   a.click();
-};
-
-
+}
