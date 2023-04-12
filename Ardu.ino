@@ -31,8 +31,8 @@ void setup() {
 
   //---------------------------------------------WIFI---------------------------------------------
   //WiFi.begin("Telenor4053myk", "kIcob7jr4");
-  //WiFi.begin("Hdæw", "12345");
-  WiFi.begin("EUC-iOT-HTX", "iOTeucHTX");
+  WiFi.begin("Hdæw", "12345");
+  //WiFi.begin("EUC-iOT-HTX", "iOTeucHTX");
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -68,6 +68,8 @@ void setup() {
   server.on("/", handleRoot);
   server.on("/temperature", temperatur);
   server.on("/voltage", voltage);
+  server.on("/Data", Data);
+
   server.begin();
 
   Serial.println("Server started.");
@@ -87,7 +89,14 @@ void loop() {
 void temperatur() {
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
+void Data() {
+  for (i = 0; i < 1; i++) {
 
+
+
+    
+  }
+}
 void voltage() {
   String str = server.arg("filename");
   char* cstr = new char[str.length() + 1];
@@ -96,8 +105,8 @@ void voltage() {
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
 void handleRoot() {
- Serial.println(server.arg("filename"));
-//thething
+  Serial.println(server.arg("filename"));
+  //thething
   String page = "";
   page += "<!DOCTYPE html>";
   page += "";
