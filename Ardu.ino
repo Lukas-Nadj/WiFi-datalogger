@@ -2,34 +2,83 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>  // Include the mDNS library
+#include <ESP8266HTTPClient.h>
+#include <SPI.h>  // include library SPI.h
+#include <SD.h>   // include library SD.h
 
+File myFile;  // create object myFile from File
+
+String ESPNAVN = "esp8266-0";
+char hostname[10];
+const char* service = "_http._tcp.local";
+const char filnavn[] = "dinmor.csv";
 ESP8266WebServer server(80);
 int timer = 0;
 circ_buff<float> buffer();
 
 
 void setup() {
+  //---------------------------------------------Serial og SD---------------------------------------------
   Serial.begin(115200);
-  //WiFi.begin("EUC-iOT-HTX", "iOTeucHTX"); //Connect to the WiFi network
-  //WiFi.begin("Hdæw", "12345678");
-  WiFi.begin("Telenor4053myk", "kIcob7jr4");
-  checkwificonnection();
-  server.enableCORS(true);
-
-  if (MDNS.begin("esp8266")) {
-    Serial.println("MDNS Responder Started");
-    MDNS.addService("http", "tcp", 80);
-  } else {
-    Serial.println("MDNS Responder did not start");
+  while (!Serial)
+    ;
+  if (!SD.begin(4)) {
+    Serial.println("Card failed, or not present");
+    // don't do anything more:
+    while (1)
+      ;
   }
 
-  
+  //---------------------------------------------WIFI---------------------------------------------
+  //WiFi.begin("Telenor4053myk", "kIcob7jr4");
+  //WiFi.begin("Hdæw", "12345");
+  WiFi.begin("EUC-iOT-HTX", "iOTeucHTX");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.println("Waiting to connect...");
+  }
+
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  // Find an available hostname
+  String hostname;
+  for (int i = 0; i < 20; i++) {
+    hostname = "esp8266-" + String(i);
+    if (isHostnameAvailable(hostname)) {
+      Serial.println("Hostname " + hostname + " is available.");
+      break;
+    } else {
+      Serial.println("Hostname " + hostname + " is taken.");
+    }
+  }
+
+  // Set the hostname and start the mDNS responder
+  if (MDNS.begin(hostname.c_str())) {
+    Serial.println("mDNS responder started: " + hostname);
+  } else {
+    Serial.println("Error starting mDNS responder.");
+  }
+
+  // Add the HTTP service to mDNS
+  MDNS.addService("http", "tcp", 80);
+
+  // Start the server
+  server.on("/", handleRoot);
+  server.on("/temperature", temperatur);
+  server.on("/voltage", voltage);
+  server.begin();
+
+  Serial.println("Server started.");
 }
 
+
+
 void loop() {
-  checkwificonnection();
   MDNS.update();
-  if(millis()>timer+10000){
+
+  if (millis() > timer + 10000) {
     MDNS.announce();
     timer = millis();
   }
@@ -40,10 +89,15 @@ void temperatur() {
 }
 
 void voltage() {
-
+  String str = server.arg("filename");
+  char* cstr = new char[str.length() + 1];
+  strcpy(cstr, str.c_str());
+  newfile("Voltage, Ampere", cstr);
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
 void handleRoot() {
+ Serial.println(server.arg("filename"));
+//thething
   String page = "";
   page += "<!DOCTYPE html>";
   page += "";
@@ -213,25 +267,37 @@ void handleRoot() {
   server.send(200, "text/html", page);
 }
 
+void newfile(String heading, char nytfilnavn[]) {
+  char fi[] = "/data/";
+  strcpy(fi, "/data/"); /* copy name into the new var */
+  strcat(fi, nytfilnavn);
+  strcat(fi, ".csv");                      /* add the extension */
+  File txtFile = SD.open(fi, FILE_WRITE);  //opening the file
+  if (!txtFile) {                          //if file not found
+    Serial.print("error opening ");
+    Serial.println(filename);
+    while (1)
+      ;
+  }
+  // Add heading
+  txtFile.println(heading);
+}
 
 
-void checkwificonnection() {
-  bool disconnected = false;
-  if (WiFi.status() != WL_CONNECTED) {
-    disconnected = true;
+bool isHostnameAvailable(String hostname) {
+  WiFiClient client;
+  HTTPClient http;
+  bool isAvailable = true;
+
+  if (http.begin(client, "http://" + hostname)) {
+    int httpCode = http.GET();
+    if (httpCode == HTTP_CODE_OK) {
+      isAvailable = false;
+    }
+    http.end();
+  } else {
+    Serial.println("Unable to connect to HTTP server.");
   }
-  while (WiFi.status() != WL_CONNECTED) {  //Wait for connection
-    delay(500);
-    Serial.println("Waiting to connect…");
-  }
-  if (disconnected) {
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
-    server.on("/", handleRoot);
-    server.on("/temperature", temperatur);
-    server.on("/voltage", voltage);
-    //server.on("/voltage", temperatur);
-    server.begin();
-  }
-  //Print the local IP to access the server
+
+  return isAvailable;
 }
