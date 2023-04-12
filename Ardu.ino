@@ -31,7 +31,7 @@ void setup() {
 
   //---------------------------------------------WIFI---------------------------------------------
   //WiFi.begin("Telenor4053myk", "kIcob7jr4");
-  WiFi.begin("Hdæw", "12345");
+  WiFi.begin("Hdæw", "12345678");
   //WiFi.begin("EUC-iOT-HTX", "iOTeucHTX");
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -90,12 +90,13 @@ void temperatur() {
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
 void Data() {
-  for (i = 0; i < 1; i++) {
+  //for (i = 0; i < 1; i++) {
 
 
 
     
-  }
+ // }
+  SD.open("/data/");
 }
 void voltage() {
   String str = server.arg("filename");
