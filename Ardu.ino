@@ -16,6 +16,7 @@ ESP8266WebServer server(80);
 int timer = 0;
 circ_buff<float> buffer();
 
+File root;
 
 void setup() {
   //---------------------------------------------Serial og SD---------------------------------------------
@@ -63,16 +64,32 @@ void setup() {
 
   // Add the HTTP service to mDNS
   MDNS.addService("http", "tcp", 80);
-
+  server.enableCORS(true);
   // Start the server
   server.on("/", handleRoot);
   server.on("/temperature", temperatur);
   server.on("/voltage", voltage);
-  server.on("/Data", Data);
+  server.on("/data", Data);
 
   server.begin();
 
   Serial.println("Server started.");
+
+
+  Serial.print("Initializing SD card...");
+
+  if (!SD.begin(10)) {
+    Serial.println("initialization failed!");
+    while (1)
+      ;
+  }
+  Serial.println("initialization done.");
+
+  root = SD.open("/data/");
+
+  printDirectory(root, 0);
+
+  Serial.println("done!");
 }
 
 
@@ -89,20 +106,54 @@ void loop() {
 void temperatur() {
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
+
+void printDirectory(File dir, int numTabs) {
+  while (true) {
+
+    File entry = dir.openNextFile();
+    if (!entry) {
+      // no more files
+      break;
+    }
+    for (uint8_t i = 0; i < numTabs; i++) {
+      Serial.print('\t');
+    }
+    Serial.print(entry.name());
+    if (entry.isDirectory()) {
+      Serial.println("/");
+      printDirectory(entry, numTabs + 1);
+    } else {
+      // files have sizes, directories do not
+      Serial.print("\t\t");
+      Serial.println(entry.size(), DEC);
+    }
+    entry.flush();
+    entry.close();
+  }
+}
+
+
 void Data() {
   //for (i = 0; i < 1; i++) {
 
 
 
-    
- // }
+
+  // }
   SD.open("/data/");
+  //  File txtFile = SD.open("/data/", FILE_WRITE);  //opening the file
+  // File entry = "/data/".directory.dir.data();
+  // printDirectory(entry, numTabs + 1);
+
+
+  server.send(200, "text/html", root);
 }
 void voltage() {
   String str = server.arg("filename");
-  char* cstr = new char[str.length() + 1];
+  char* cstr = new char[17];
   strcpy(cstr, str.c_str());
   newfile("Voltage, Ampere", cstr);
+
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
 void handleRoot() {
@@ -278,7 +329,7 @@ void handleRoot() {
 }
 
 void newfile(String heading, char nytfilnavn[]) {
-  char fi[] = "/data/";
+  char fi[100] = "/data/";
   strcpy(fi, "/data/"); /* copy name into the new var */
   strcat(fi, nytfilnavn);
   strcat(fi, ".csv");                      /* add the extension */
