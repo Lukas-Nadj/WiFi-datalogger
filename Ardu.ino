@@ -134,19 +134,36 @@ void printDirectory(File dir, int numTabs) {
 
 
 void Data() {
-  //for (i = 0; i < 1; i++) {
 
-
-
-
-  // }
   SD.open("/data/");
   //  File txtFile = SD.open("/data/", FILE_WRITE);  //opening the file
   // File entry = "/data/".directory.dir.data();
   // printDirectory(entry, numTabs + 1);
+  // string Filer = "";
+  while (true) {
+
+    File entry = dir.openNextFile();
+    if (!entry) {
+      // no more files
+      break;
+    }
+    for (uint8_t i = 0; i < numTabs; i++) {
+      Serial.print('\t');
+    }
+    Serial.print(entry.name());
+    if (entry.isDirectory()) {
+     
+    } else {
+      // files have sizes, directories do not
+      Serial.print("\t\t");
+      Serial.println(entry.size(), DEC);
+    }
+    entry.flush();
+    entry.close();
+  }
 
 
-  server.send(200, "text/html", root);
+  server.send(200, "text/html", Filer);
 }
 void voltage() {
   String str = server.arg("filename");
