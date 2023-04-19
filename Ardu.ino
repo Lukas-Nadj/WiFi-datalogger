@@ -16,6 +16,8 @@ ESP8266WebServer server(80);
 int timer = 0;
 circ_buff<float> buffer();
 
+boolean open = false;
+
 File root;
 
 void setup() {
@@ -167,9 +169,15 @@ void Data() {
 }
 void voltage() {
   String str = server.arg("filename");
+  Serial.println(server.arg("filename"));
   char* cstr = new char[17];
   strcpy(cstr, str.c_str());
-  newfile("Voltage, Ampere", cstr);
+  String log[] = {String(analogRead(A0) / 320.0, 5)};
+  if(open){
+    newfile("Voltage, Ampere", cstr, NULL);
+  } else{
+  newfile("Voltage, Ampere", cstr, log);
+  }
 
   server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
 }
@@ -345,8 +353,8 @@ void handleRoot() {
   server.send(200, "text/html", page);
 }
 
-void newfile(String heading, char nytfilnavn[]) {
-  char fi[100] = "/data/";
+void newfile(String heading, char nytfilnavn[], String log[]) {
+  char fi[] = "/data/";
   strcpy(fi, "/data/"); /* copy name into the new var */
   strcat(fi, nytfilnavn);
   strcat(fi, ".csv");                      /* add the extension */
@@ -358,7 +366,15 @@ void newfile(String heading, char nytfilnavn[]) {
       ;
   }
   // Add heading
+  if(!log){
   txtFile.println(heading);
+  } else{
+    for(int i = 0; i<(sizeof(log))-1;i++){
+      txtFile.print(log[i]+",");
+    }
+    txtFile.println(log[sizeof(log)]);
+  }
+  txtFile.flush();
 }
 
 
