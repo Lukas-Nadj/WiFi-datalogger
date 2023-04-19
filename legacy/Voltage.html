@@ -4,22 +4,23 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>Datalogger</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
   <style>
     body {
-      background-color: #358EDF;
-      background: linear-gradient(245.12deg, #3F75A7 0%, #001325 118.87%);
+      background-color: #365B7D;
+      margin: 0px;
       padding: 0px;
-      padding-top: 0px;
-      box-sizing: border-box;
       font-size: 12px;
       font-family: Arial, Helvetica, sans-serif;
       font-weight: lighter;
-      margin: 0px;
     }
 
     .bod {
       font-family: Arial, Helvetica, sans-serif;
+
     }
 
     .grid {
@@ -35,8 +36,7 @@
       display: flex;
       position: relative;
       flex-direction: column;
-      background: linear-gradient(187.29deg, #CBCBCB 0%, #979797 136.3%);
-      border-radius: 0px 20px 20px 0px;
+      background-color: #D9D9D9;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
       justify-content: left;
@@ -45,7 +45,7 @@
       width: 42px;
       height: 100vh;
       padding: 10px;
-      transition: width .17s ease-in-out;
+      transition: width .25s ease-in-out;
     }
 
 
@@ -53,7 +53,7 @@
       width: 317px;
       padding: 5px;
       padding-top: 10px;
-      transition: all .15s ease-in-out;
+      transition: all .2s ease-in-out;
     }
 
 
@@ -63,7 +63,7 @@
       position: absolute;
       transition: visibility 0s linear 0.1s;
     }
-
+    
     .nav:hover .text {
       visibility: visible;
       z-index: 2;
@@ -90,13 +90,13 @@
       border: 1px solid #000000;
       width: 48px;
       height: 48px;
-      transition: width .15s ease-in-out;
+      transition: width .25s ease-in-out;
       border-radius: 25px;
     }
 
     .nav:hover .card {
       width: 284px;
-      transition: width .15s ease-in-out;
+      transition: width .20s ease-in-out;
     }
 
     .logo {
@@ -107,6 +107,12 @@
       height: 25px;
     }
 
+    .logo svg {
+      margin-left: 0.1%;
+      margin-top: -0.1%;
+
+    }
+
     .text {
       position: absolute;
     }
@@ -115,7 +121,7 @@
       padding-left: 5px;
       -webkit-text-fill-color: #FFFFFF;
       grid-row: 1 / 1;
-      width: 35%;
+      width: 60%;
       grid-column: 2;
     }
 
@@ -135,12 +141,11 @@
       transition: all .2s ease-in-out;
     }
 
-    .nav .vis {
+    .nav .vis{
+      padding-left: 10px;
       visibility: hidden;
       position: absolute;
-      transition: all .5 linear;
     }
-
     .nav:hover .vis {
       visibility: visible;
       position: relative;
@@ -148,115 +153,45 @@
       transition: visibility 0s linear 0.14s;
     }
 
-    .vis input {
-      width: 70px;
+    .vis input, #sensor{
+      width: 40%;
       font-size: small;
-
+      border-radius: 10px;
     }
 
-    .vis {
+    .data{
       display: flex;
+      padding-top: 20px;
+      align-items:flex-start;
       justify-content: center;
-      align-items: center;
-      width: 100%;
-      transition: all .5 linear;
-    }
-
-    .vis ul {
-      display: flex;
-      list-style: none;
-      padding-left: 0px;
-      width: 100%;
-      flex-direction: column;
-      gap: 5px;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .vis li div {
-      display: flex;
-      align-items: last baseline;
-      justify-content: flex-end;
       width: 100%;
     }
 
-    .item-container {
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-
-    }
-
-    .item-container ul {
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      list-style-type: none;
-      margin-left: -12px;
-    }
-
-    .item {
-      padding-left: 10px;
-      padding-right: 5px;
-      display: flex;
-      background-color: white;
-      border-radius: 20px;
-      border: 2px solid black;
-      height: 25px;
-      width: 70%;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 0px;
-    }
-
-    .item .logo {
-      display: flex;
-      justify-content: last baseline;
-      max-width: 20%;
-      width: 20%;
-      transition: ease-in-out 2s linear;
-    }
-
-    .edit:hover{
-      -webkit-text-fill-color: #358EDF;
-    }
-    .delete:hover{
-      -webkit-text-fill-color:red;
-    }
-
-    .data {
-      display: flex;
-    }
   </style>
-  
 </head>
 
 <body>
   <div class="grid">
     <div class="nav">
-      <div class="card" onclick="window.location.href = '../index.html';">
+      <div class="card" onclick="window.location.href = '../index.html';" >
         <h3 class="text">Start nyt forsøg</h3>
         <p class="logo" style="font-size:XX-large;">+</p>
       </div>
       <div class="vis">
         <form action="./Voltage.html">
-          <input type="number" name="Frekvens" id="" value="1.0" min="0.0" max="10.0" step="any" required> Frekvens i
-          Hz<br>
+          <input type="number" name="Frekvens" id="" value="1.0" min="0.0" max="10.0" step="any" required> Frekvens i Hz<br>
           <input type="number" name="Punkter" id="" value="500"> Hvor mange gemter punkter? <br>
-          <input type="text" name="Destination" id="source" value="esp8266.local" style="width:100px;" required>
-          Destination <br>
-          <input type="text" name="filename" id="filename" value="Filnavn" style="width:100px;" required> Filnavn <br>
-
+          <input type="text" name="Destination" id="source" value="esp8266.local" style="width:100px;" required> Destination <br>
           <select name="Sensore" id="sensor" required>
-            <option value="V+A">Volt+Ampere meter</option>
-            <option value="P">Tryksensor</option>
-            <option value="T">Temperaturmåler</option>
-            <!--<option value="audi">Audi</option> -->
+              <option value="V+A">Volt+Ampere meter</option>
+              <option value="P">Tryksensor</option>
+              <option value="T">Temperaturmåler</option>
+              <!--<option value="audi">Audi</option> -->
           </select> Sensor <br>
           <input type="submit" value="Submit">
-        </form>
+      </form>
       </div>
-
+      
       <div class="card">
         <h3 class="text">Åben eksisterende forsøg</h3>
         <div class="logo" width="15px" height="15px" style="font-size:XX-large;">
@@ -267,31 +202,12 @@
           </svg>
         </div>
       </div>
-      <div class="vis item-container" style="gap:5px">
-         <div class="item">
-          <input style="width:100%">
-          <div contenteditable="false" class="logo vis edit">Edit</div>
-          <div contenteditable="false" class="logo vis delete">Slet</div>
-        </div>
-        <div class="item">
-          <input style="width:100%">
-          <div contenteditable="false"  class="logo vis"></div>
-          <svg contenteditable="false"  class="logo vis" xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 576 512"><!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) -->
-            <path
-              d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
-          </svg>
-          <div contenteditable="false" class="logo vis">awd</div>
-        </div>
-        
-
-      </div>
       <hr>
       <div class="card">
         <h3 class="text">Forbind til datalogger</h3>
         <div class="logo" style="width:100px; height: 100px;">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-9.4 -9.4 82.8 82.8" aria-labelledby="title"
-            aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-9.4 -9.4 82.8 82.8" aria-labelledby="title" aria-describedby="desc"
+            role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
             <title>Wifi</title>
             <desc>A solid styled icon from Orion Icon Library.</desc>
             <path data-name="layer2"
@@ -339,9 +255,10 @@
           virker ikke)</li>
       </ul>
     </div>
-    <div class="data" style="width: 1fr;">
-
+    <div class="data">
+      <div style="width: auto; height:auto;" id="chart-temperature" class="container"></div>
     </div>
+    <script src="index.js"></script>
 </body>
 
 </html>
