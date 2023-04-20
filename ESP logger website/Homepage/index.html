@@ -38,35 +38,49 @@
       display: flex;
       position: relative;
       flex-direction: column;
-      background: linear-gradient(187.29deg, #CBCBCB 0%, #979797 136.3%);
+      /*background: linear-gradient(187.29deg, #CBCBCB 0%, #979797 136.3%);*/
+      /*background: linear-gradient(0deg, rgba(0, 133, 255, 0.2), rgba(0, 133, 255, 0.2)), linear-gradient(5.27deg, #000000 77.01%, #3D3D3D 98.51%);*/
+      /*background: linear-gradient(0deg, rgba(0, 133, 255, 0.2), rgba(0, 133, 255, 0.2)), linear-gradient(5.27deg, #3D3D3D 31.67%, #000000 77.01%);*/
+      background: linear-gradient(0deg, rgba(0, 133, 255, 0.2), rgba(0, 133, 255, 0.2)), linear-gradient(0deg, #000000, #000000);      
       border-radius: 0px 20px 20px 0px;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
       justify-content: left;
+      -webkit-text-fill-color: #000000  ;
       gap: 13px;
       align-items: center;
       width: 42px;
       height: 100vh;
       padding: 10px;
-      transition: width .17s ease-in-out;
+      transition: width .18s ease-in-out;
       padding-top: -10px;
     }
 
 
     .nav:hover {
+      visibility:visible;
       width: 317px;
       padding: 10px;
       padding-top: -10px;
-
       transition: all .15s ease-in-out;
     }
+    .nav hr{
+      visibility: hidden;
+      transition:none;
+    }
+    .nav h3{
+      visibility: hidden;
+      transition:none;
+    }
+
+  
 
 
     .nav .text {
       visibility: hidden;
       z-index: 2;
       position: absolute;
-      transition: visibility 0s linear 0.1s;
+      transition: visibility 0s linear 0.05s;
     }
 
     .nav:hover .text {
@@ -91,12 +105,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #FFFFFF;
+      background-color: #244A6E;
       border: 1px solid #000000;
       width: 48px;
       height: 48px;
       min-height: 48px;
-
+      -webkit-text-fill-color: #FFFFFF;
       transition: width .15s ease-in-out;
       border-radius: 25px;
     }
@@ -157,10 +171,29 @@
       transition: visibility 0s linear 0.14s;
     }
 
-    .vis input {
+    .vis input{
       width: 70px;
       font-size: small;
-
+      background-color: A2BED8;
+      border-width: 0.5px;
+    }
+    form{
+      -webkit-text-fill-color: #FFFFFF;
+    }
+    form input{
+      width: 70px;
+      font-size: small;
+      border-radius: 5px;
+      border-width: 1px;
+      -webkit-text-fill-color: #000000;
+    }
+    form select{
+      width: auto;
+      font-size: small;
+      border-radius: 1px;
+      border-width: 1px;
+      -webkit-text-fill-color: #000000;
+      background-color: A2BED8;
     }
 
     .vis {
@@ -193,7 +226,7 @@
       display: flex;
       width: 100%;
       flex-direction: column;
-
+      
     }
 
     .item-container ul {
@@ -208,14 +241,18 @@
       padding-left: 10px;
       padding-right: 5px;
       display: flex;
-      background-color: white;
+      background-color: A2BED8;
       border-radius: 20px;
       border: 2px solid black;
-      height: 25px;
+      height: 20px;
       width: 70%;
       justify-content: flex-start;
       align-items: center;
       gap: 0px;
+    }
+
+    .item input{
+      border-style: hidden;
     }
 
     .item .logo {
@@ -247,9 +284,9 @@
     <div class="nav" style="overflow: scroll;">
       <div class="card" onclick="window.location.href = '../index.html';">
         <h3 class="text">Start nyt forsøg</h3>
-        <p class="logo" style="font-size:XX-large;">+</p>
+        <p class="logo" style="font-size:XX-large; -webkit-text-fill-color: #000000 ;">+</p>
       </div>
-      <div class="vis">
+      <div class="vis" style="border-radius: 10;">
         <form action="./Voltage.html">
           <input type="number" name="Frekvens" id="" value="1.0" min="0.0" max="10.0" step="any" required> Frekvens i
           Hz<br>
@@ -279,21 +316,19 @@
           </svg>
         </div>
       </div>
+      <script src="addtolist.js"></script>
       <div id="list" class="vis item-container" style="gap:5px">
-        <div class="item" style="cursor: pointer;">
-          <input style="width:100%;">
-          <div contenteditable="false" class="logo vis edit">Edit</div>
-          <div contenteditable="false" class="logo vis delete">Slet</div>
-        </div>
-        <div class="item" style="cursor: pointer;">
-          <input style="width:100%">
-          <div class="logo vis edit">Edit</div>
-          <div class="logo vis delete"><a>Slet</a></div>
+        <div class="item" id="item-0" style="cursor:pointer">
+          <input style="width:100%" value="item value">
+          <div class="logo vis edit" >Edit</div>
+          <div class="logo vis delete"><a onclick="deleteItem(0)">Slet</a></div>
         </div>
       </div>
-      <script src="addtolist.js"></script>
-      <button onclick="addLinesToList()"> </button>
-      <hr>
+      <div style="display:flex;" class="vis">
+      <button style="width:20px; height:20px; display: flex; justify-content: center; border-width: 1px; border-radius: 5px; background-color: #FFFFFF;" onclick="addLinesToList()"> &#8634;</button> 
+      <button style="width:20px; height:20px; display: flex; justify-content: center; border-width: 1px; border-radius: 5px; background-color: #FFFFFF;" onclick="addToList('bruh')">+</button>
+      </div>
+      <hr color="#000000" style="width: 30px;" class="vis">
       <div class="card">
         <h3 class="text">Forbind til datalogger</h3>
         <div class="logo" style="width:100px; height: 100px;">
@@ -314,6 +349,14 @@
 
         </div>
       </div>
+      <div id="list" class="vis item-container" style="gap:5px">
+        <div class="item" id="item-0" style="cursor:pointer">
+          <input style="width:100%" value="item value">
+          <div class="logo vis edit" >Edit</div>
+          <div class="logo vis delete"><a onclick="deleteItem(0)">Slet</a></div>
+        </div>
+      </div>
+      
     </div>
     <div class="bod">
       <h1 style="font-weight: lighter;">Datalogger</h1>
