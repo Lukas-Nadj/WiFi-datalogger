@@ -1,5 +1,5 @@
 
-function addToList(value) {
+/*function addToList(value) {
   // Create new div with class "item"
   var newItem = document.createElement("div");
   newItem.classList.add("item");
@@ -27,6 +27,44 @@ function addToList(value) {
   // Add the new div as a child of the div with id "list"
   var listDiv = document.getElementById("list");
   listDiv.appendChild(newItem);
+}*/
+function addToList(value) {
+  // Create new div with class "item"
+  var newItem = document.createElement("div");
+  newItem.classList.add("item");
+
+  // Create new input element with style "width:100%" and set its value to the input string
+  var newInput = document.createElement("input");
+  newInput.style.width = "100%";
+  newInput.value = value;
+  newItem.appendChild(newInput);
+
+  // Create new div with class "logo vis edit" and text "Edit"
+  var newEdit = document.createElement("div");
+  newEdit.classList.add("logo", "vis", "edit");
+  newEdit.textContent = "Edit";
+  // Add an index to the ID of the Edit button
+  newEdit.id = "edit-" + (document.getElementsByClassName("item").length + 1);
+  newItem.appendChild(newEdit);
+
+  // Create new div with class "logo vis delete" and a child anchor tag with text "Slet"
+  var newDelete = document.createElement("div");
+  newDelete.classList.add("logo", "vis", "delete");
+  var deleteLink = document.createElement("a");
+  deleteLink.textContent = "Slet";
+  // Add an index to the ID of the Delete button
+  deleteLink.id = "delete-" + (document.getElementsByClassName("item").length + 1);
+  newDelete.appendChild(deleteLink);
+  newItem.appendChild(newDelete);
+
+  // Add the new div as a child of the div with id "list"
+  var listDiv = document.getElementById("list");
+  listDiv.appendChild(newItem);
+}
+function deleteItem(index) {
+  // Remove the div with the given index from the list
+  var itemToDelete = document.getElementById("item-" + index);
+  itemToDelete.parentNode.removeChild(itemToDelete);
 }
 function clearList() {
   var listDiv = document.getElementById("list");
@@ -172,3 +210,13 @@ function download(data) {
   // Performing a download with click
   a.click();
 }
+// Add an event listener for the Delete button
+document.addEventListener("click", function(event) {
+  if (event.target && event.target.id.startsWith("delete-")) {
+    // Get the index from the ID of the Delete button
+    var index = parseInt(event.target.id.split("-")[1]);
+    deleteItem(index);
+  }
+});
+
+addToList("bruh");
