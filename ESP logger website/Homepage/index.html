@@ -316,7 +316,7 @@
           </svg>
         </div>
       </div>
-      <script src="addtolist.js"></script>
+      <script src="addtolist.js" defer></script>
       <div id="list" class="vis item-container" style="gap:5px">
         <div class="item" id="item-0" style="cursor:pointer">
           <input style="width:100%" value="item value">
@@ -349,14 +349,23 @@
 
         </div>
       </div>
-      <div id="list" class="vis item-container" style="gap:5px">
+      <script src="wifi.js"></script>
+      <div id="wifi" class="vis item-container" style="gap:5px">
         <div class="item" id="item-0" style="cursor:pointer">
           <input style="width:100%" value="item value">
           <div class="logo vis edit" >Edit</div>
           <div class="logo vis delete"><a onclick="deleteItem(0)">Slet</a></div>
         </div>
       </div>
-      
+      <div id="auto" class="vis item-container" style="gap:5px">
+        <script></script>
+        <div class="item" id="item-0" style="cursor:pointer">
+          <input style="width:100%" value="item value">
+          <div class="logo vis edit" >Edit</div>
+          <div class="logo vis delete"><a onclick="deleteItem(0)">Slet</a></div>
+        </div>
+      </div>
+
     </div>
     <div class="bod">
       <h1 style="font-weight: lighter;">Datalogger</h1>
