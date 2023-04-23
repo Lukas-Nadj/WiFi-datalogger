@@ -340,7 +340,7 @@
       </div>
       <hr color="#000000" style="width: 30px;" class="vis">
       <div class="card">
-        <h3 class="text">Forbind til datalogger</h3>
+        <h3 class="text">Tilgængelige enheder</h3>
         <div class="logo" style="width:100px; height: 100px;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="-9.4 -9.4 82.8 82.8" aria-labelledby="title"
             aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -398,6 +398,22 @@
           er kun tilgængelige på computer.<br><br> Tl;dr - det virker kun på visse browsere og devices (Mobiltelefon
           virker ikke)</li>
       </ul>
+      <div style="position: absolute; top: 0; z-index: 1000000; width: 100%; height:100%; display: flex; flex-direction: row; align-items: end;">
+        <div style="line-height: 12px;">
+        <h1 id="name">ESP8266.local</h1>
+        <p id="uptime">Uptime: 1230194</p>
+        <script>
+          document.getElementById("name").innerHTML = window.location.hostname;
+          let time = 0;
+          setInterval(function() {
+            time += 1;
+            document.getElementById("uptime").innerHTML = "Uptime: "+time;
+          }, 1)
+          
+        </script>
+        <br>
+        <br>
+      </div>
     </div>
     <div class="data" style="width: 1fr;">
 

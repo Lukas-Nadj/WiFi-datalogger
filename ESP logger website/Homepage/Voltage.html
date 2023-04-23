@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -20,10 +21,11 @@
       font-weight: lighter;
       margin: 0px;
     }
-    
+
     .bod {
       font-family: Arial, Helvetica, sans-serif;
-      width: 67%  ;
+      width: 67%;
+
     }
 
     .grid {
@@ -42,12 +44,12 @@
       /*background: linear-gradient(187.29deg, #CBCBCB 0%, #979797 136.3%);*/
       /*background: linear-gradient(0deg, rgba(0, 133, 255, 0.2), rgba(0, 133, 255, 0.2)), linear-gradient(5.27deg, #000000 77.01%, #3D3D3D 98.51%);*/
       /*background: linear-gradient(0deg, rgba(0, 133, 255, 0.2), rgba(0, 133, 255, 0.2)), linear-gradient(5.27deg, #3D3D3D 31.67%, #000000 77.01%);*/
-      background: linear-gradient(0deg, rgba(0, 133, 255, 0.2), rgba(0, 133, 255, 0.2)), linear-gradient(0deg, #000000, #000000);      
+      background: linear-gradient(0deg, rgba(0, 133, 255, 0.2), rgba(0, 133, 255, 0.2)), linear-gradient(0deg, #000000, #000000);
       border-radius: 0px 20px 20px 0px;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
       justify-content: left;
-      -webkit-text-fill-color: #000000  ;
+      -webkit-text-fill-color: #000000;
       gap: 13px;
       align-items: center;
       width: 42px;
@@ -126,9 +128,9 @@
     }
 
     .bod {
-      flex-grow:4;
+      flex-grow: 4;
       padding-left: 5px;
-      -webkit-text-fill-color: #FFFFFF;
+      -webkit-text-fill-color: #ABCAE7;
       grid-row: 1fr / 1fr;
       width: 20%;
       grid-column: 2;
@@ -167,31 +169,37 @@
       font-size: small;
 
     }
-    .nav hr{
+
+    .nav hr {
       visibility: hidden;
-      transition:none;
+      transition: none;
     }
-    .nav h3{
+
+    .nav h3 {
       visibility: hidden;
-      transition:none;
+      transition: none;
     }
-    .vis input{
+
+    .vis input {
       width: 70px;
       font-size: small;
       background-color: A2BED8;
       border-width: 0.5px;
     }
-    form{
+
+    form {
       -webkit-text-fill-color: #FFFFFF;
     }
-    form input{
+
+    form input {
       width: 70px;
       font-size: small;
       border-radius: 5px;
       border-width: 1px;
       -webkit-text-fill-color: #000000;
     }
-    form select{
+
+    form select {
       width: auto;
       font-size: small;
       border-radius: 1px;
@@ -199,6 +207,7 @@
       -webkit-text-fill-color: #000000;
       background-color: A2BED8;
     }
+
     .vis {
       display: flex;
       justify-content: center;
@@ -254,7 +263,7 @@
       gap: 0px;
     }
 
-    .item input{
+    .item input {
       border-style: hidden;
     }
 
@@ -276,12 +285,12 @@
       cursor: pointer;
     }
 
-    .data{
+    .data {
       display: flex;
       padding-top: 10px;
-      align-items:flex-start;
+      align-items: flex-start;
       justify-content: center;
-      width:53%;
+      width: 53%;
     }
   </style>
 </head>
@@ -289,15 +298,15 @@
 <body style="overflow:hidden;">
   <div class="grid">
     <div class="nav" style="overflow: scroll;">
-      <div class="card" onclick="window.location.href = '../index.html';">
+      <div class="card">
         <h3 class="text">Start nyt forsøg</h3>
         <p class="logo" style="font-size:XX-large; -webkit-text-fill-color: #000000 ;">+</p>
       </div>
       <div class="vis" style="border-radius: 10;">
         <form action="./Voltage.html">
-          <input type="number" name="Frekvens" id="" value="1.0" min="0.0" max="10.0" step="any" required> Frekvens i
-          Hz<br>
-          <input type="number" name="Punkter" id="" value="500"> Hvor mange gemter punkter? <br>
+          <input type="number" name="Frekvens" id="" value="1.0" min="0.0" max="10.0" step="any" required>
+          <p style="display: inline;"> Frekvens i Hz </p><br>
+          <input type="number" name="Punkter" id="" value="500"> Hvor mange gemter punkter?<br>
           <input type="text" name="Destination" id="source" value="esp8266.local" style="width:100px;"
             onchange="addLinesToList" required>
           Destination <br>
@@ -323,21 +332,25 @@
           </svg>
         </div>
       </div>
-      <script src="addtolist.js"></script>
+      <script src="addtolist.js" defer></script>
       <div id="list" class="vis item-container" style="gap:5px">
         <div class="item" id="item-0" style="cursor:pointer">
-          <input style="width:100%" value="item value">
-          <div class="logo vis edit" >Edit</div>
+          <input style="width:100%" value="item value" disabled>
+          <div class="logo vis edit">Edit</div>
           <div class="logo vis delete"><a onclick="deleteItem(0)">Slet</a></div>
         </div>
       </div>
       <div style="display:flex;" class="vis">
-      <button style="width:20px; height:20px; display: flex; justify-content: center; border-width: 1px; border-radius: 5px; background-color: #FFFFFF;" onclick="addLinesToList()"> &#8634;</button> 
-      <button style="width:20px; height:20px; display: flex; justify-content: center; border-width: 1px; border-radius: 5px; background-color: #FFFFFF;" onclick="addToList('bruh')">+</button>
+        <button
+          style="width:20px; height:20px; display: flex; justify-content: center; border-width: 1px; border-radius: 5px; background-color: #FFFFFF;"
+          onclick="addLinesToList()"> &#8634;</button>
+        <button
+          style="width:20px; height:20px; display: flex; justify-content: center; border-width: 1px; border-radius: 5px; background-color: #FFFFFF;"
+          onclick="addToList('bruh')">+</button>
       </div>
       <hr color="#000000" style="width: 30px;" class="vis">
       <div class="card">
-        <h3 class="text">Forbind til datalogger</h3>
+        <h3 class="text">Tilgængelige enheder</h3>
         <div class="logo" style="width:100px; height: 100px;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="-9.4 -9.4 82.8 82.8" aria-labelledby="title"
             aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -356,9 +369,16 @@
 
         </div>
       </div>
-      
+      <script src="wifi.js" defer>
+        addToWifi("bruh");
+      </script>
+
+      <div id="auto" class="vis item-container" style="gap:5px">
+
+      </div>
+
     </div>
-    <div class="bod">
+    <div class="bod" style="width:300px">
       <h1 style="font-weight: lighter;">Datalogger</h1>
       <p> velkommen til vores revideret data-indsamlings system!</p>
       <br style="line-height: 0.5%;">
@@ -388,15 +408,33 @@
           er kun tilgængelige på computer.<br><br> Tl;dr - det virker kun på visse browsere og devices (Mobiltelefon
           virker ikke)</li>
       </ul>
-    </div>
-    <div class="data">
-      <div style="width: auto; height:auto;" id="chart-temperature" class="container"></div>
-      <div style="width:100px">
+      <div style="position: absolute; top: 0; z-index: 1000000; width: 100%; height:100%; display: flex; flex-direction: row; align-items: end;">
+        <div style="line-height: 12px;">
+          <h1 id="name">ESP8266.local</h1>
+          <p id="uptime" style="-webkit-text-fill-color: ABCAE7 !important;">Uptime: 0</p>
+          <script>
+            document.getElementById("name").innerHTML = window.location.hostname;
+            let time = 0;
+            setInterval(function () {
+              time += 1;
+              document.getElementById("uptime").innerHTML = "Uptime: " + time;
+            }, 1)
 
+          </script>
+          <br>
+          <br>
+        </div>
+      </div>
+    </div>
+    <div class="data" style=" width: 800px; display:flex; flex-direction: column; justify-content:flex-start;align-items: center; padding-right: 20px;gap:0px">
+      <div style="width: auto; height:auto; border-radius: 20px;" id="chart-temperature" class="container"></div>
+      <div style="width:600px">
+      <div class="text" ><p style="margin:0px; margin-left: 20px; -webkit-text-fill-color: #ABCAE7;"> *Ikke representativt af alt daten, kun lokal data</p></div>
       </div>
     </div>
     <script src="index.js"></script>
-    </div>
+  </div>
+
 </body>
 
 </html>

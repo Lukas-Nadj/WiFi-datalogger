@@ -142,8 +142,15 @@ var chartT = new Highcharts.Chart({
 
 let queryString = window.location.search; // "?param1=value1&param2=value2"
 let params = new URLSearchParams(queryString);
-let Frekvens = params.get("Frekvens"); // "value1"
-let Punkter = params.get("Punkter"); // "value1"
+let Frekvens = params.get("Frekvens");
+if (Frekvens == null) {
+  Frekvens = 1.0;
+}
+
+let Punkter = params.get("Punkter");
+if (Punkter == null) {
+  Punkter = 500;
+}
 setInterval(function () {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
