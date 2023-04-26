@@ -1,33 +1,4 @@
 
-/*function addToList(value) {
-  // Create new div with class "item"
-  var newItem = document.createElement("div");
-  newItem.classList.add("item");
-
-  // Create new input element with style "width:100%" and set its value to the input string
-  var newInput = document.createElement("input");
-  newInput.style.width = "100%";
-  newInput.value = value;
-  newItem.appendChild(newInput);
-
-  // Create new div with class "logo vis edit" and text "Edit"
-  var newEdit = document.createElement("div");
-  newEdit.classList.add("logo", "vis", "edit");
-  newEdit.textContent = "Edit";
-  newItem.appendChild(newEdit);
-
-  // Create new div with class "logo vis delete" and a child anchor tag with text "Slet"
-  var newDelete = document.createElement("div");
-  newDelete.classList.add("logo", "vis", "delete");
-  var deleteLink = document.createElement("a");
-  deleteLink.textContent = "Slet";
-  newDelete.appendChild(deleteLink);
-  newItem.appendChild(newDelete);
-
-  // Add the new div as a child of the div with id "list"
-  var listDiv = document.getElementById("list");
-  listDiv.appendChild(newItem);
-}*/
 function addToList(value) {
   // Create new div with class "item"
   var newItem = document.createElement("div");
@@ -70,6 +41,17 @@ function clearList() {
   var listDiv = document.getElementById("list");
   listDiv.innerHTML = "";
 }
+console.log("https://" + document.getElementById("source").value + "/voltage"+window.location.search);
+function sendFile(){
+  var xhttp = new XMLHttpRequest();
+  xhttp.open(
+    "GET",
+    "https://" + document.getElementById("source").value + "/voltage"+window.location.search,
+    true
+  );
+  xhttp.send();
+}
+
 function addLinesToList(url) {
   clearList();
   const xhr = new XMLHttpRequest();

@@ -14,9 +14,9 @@
     itemDiv.id = `item-${itemCount}`;
   
     // Create an input element with the specified value
-    const inputElem = document.createElement("input");
+    const inputElem = document.createElement("p");
     inputElem.style.width = "100%";
-    inputElem.value = value;
+    inputElem.innerHTML = value;
   
     // Create a "Edit" div element with the "logo vis edit" classes
     const editDiv = document.createElement("div");
