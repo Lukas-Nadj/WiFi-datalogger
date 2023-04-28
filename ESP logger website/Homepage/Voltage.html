@@ -332,7 +332,83 @@
           </svg>
         </div>
       </div>
-      <script src="addtolist.js" defer></script>
+      <script defer>
+
+  function addToList(value) {
+    // Find the div element with id "list"
+    const listDiv = document.getElementById("list");
+    
+    // Create a new div element with the "item" class
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "item";
+  
+    // Get the current number of items in the list
+    const itemCount = listDiv.children.length;
+  
+    // Set the id of the itemDiv to "item-N", where N is the current item count
+    itemDiv.id = `item-${itemCount}`;
+  
+    // Create an input element with the specified value
+    const inputElem = document.createElement("p");
+    inputElem.style.width = "100%";
+    inputElem.innerHTML = value;
+  
+    // Create a "Edit" div element with the "logo vis edit" classes
+    const editDiv = document.createElement("div");
+    editDiv.className = "logo vis edit";
+    editDiv.textContent = "Edit";
+  
+    // Create a "Slet" div element with the "logo vis delete" classes
+    const deleteDiv = document.createElement("div");
+    deleteDiv.className = "logo vis delete";
+    const deleteLink = document.createElement("a");
+    deleteLink.onclick = function() {
+      deleteItem(itemCount);
+    };
+    deleteLink.textContent = "Slet";
+    deleteDiv.appendChild(deleteLink);
+  
+    // Add the input, edit, and delete elements to the itemDiv
+    itemDiv.appendChild(inputElem);
+    itemDiv.appendChild(editDiv);
+    itemDiv.appendChild(deleteDiv);
+  
+    // Add the itemDiv to the listDiv
+    listDiv.appendChild(itemDiv);
+  }
+  
+  function deleteItem(index) {
+    // Remove the div with the given index from the list
+    var itemToDelete = document.getElementById("item-" + index);
+    itemToDelete.parentNode.removeChild(itemToDelete);
+  }
+  function clearList() {
+    var listDiv = document.getElementById("list");
+    listDiv.innerHTML = "";
+  }
+  function addLinesToList(url) {
+    clearList();
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        // Split the response into lines
+        const lines = xhr.responseText.split('\n');
+        // Loop through the lines and add them to the list
+        lines.forEach(function(line) {
+          if (line.trim() !== '') {
+            addToList(line.trim());
+          }
+        });
+      } else {
+        console.error('Request failed.  Returned status of ' + xhr.status);
+      }
+    };
+    xhr.send();
+  }
+  
+  
+      </script>
       <div id="list" class="vis item-container" style="gap:5px">
         <div class="item" id="item-0" style="cursor:pointer">
           <input style="width:100%" value="item value" disabled>
@@ -369,7 +445,152 @@
 
         </div>
       </div>
-      <script src="wifi.js" defer>
+      <script defer>
+        function addToWifi(value) {
+  // Find the div element with id "list"
+  const listDiv = document.getElementById("wifi");
+
+  // Create a new div element with the "item" class
+  const itemDiv = document.createElement("div");
+  itemDiv.className = "item";
+
+  // Get the current number of items in the list
+  const itemCount = listDiv.children.length;
+
+  // Set the id of the itemDiv to "item-N", where N is the current item count
+  itemDiv.id = `item-${itemCount}`;
+
+  // Create an input element with the specified value
+  const inputElem = document.createElement("input");
+  inputElem.style.width = "100%";
+  inputElem.value = value;
+
+  // Create a "Edit" div element with the "logo vis edit" classes
+  const editDiv = document.createElement("div");
+  editDiv.className = "logo vis edit";
+  editDiv.textContent = "Edit";
+
+  // Create a "Slet" div element with the "logo vis delete" classes
+  const deleteDiv = document.createElement("div");
+  deleteDiv.className = "logo vis delete";
+  const deleteLink = document.createElement("a");
+  /*deleteLink.onclick = function () {
+    deleteItem(itemCount);
+  };*/
+  deleteLink.textContent = "Slet";
+  deleteDiv.appendChild(deleteLink);
+
+  // Add the input, edit, and delete elements to the itemDiv
+  itemDiv.appendChild(inputElem);
+  itemDiv.appendChild(editDiv);
+  itemDiv.appendChild(deleteDiv);
+
+  // Add the itemDiv to the listDiv
+  listDiv.appendChild(itemDiv);
+}
+
+function deleteItem(index) {
+  // Remove the div with the given index from the list
+  var itemToDelete = document.getElementById("item-" + index);
+  itemToDelete.parentNode.removeChild(itemToDelete);
+}
+function clearList() {
+  var listDiv = document.getElementById("list");
+  listDiv.innerHTML = "";
+}
+function addLinesToList(url) {
+  clearList();
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", url);
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      // Split the response into lines
+      const lines = xhr.responseText.split("\n");
+      // Loop through the lines and add them to the list
+      lines.forEach(function (line) {
+        if (line.trim() !== "") {
+          addToWifi(line.trim());
+        }
+      });
+    } else {
+      console.error("Request failed.  Returned status of " + xhr.status);
+    }
+  };
+  xhr.send();
+}
+
+function addTowifi(value) {
+  // Find the div element with id "list"
+  const listDiv = document.getElementById("auto");
+
+  const existingInput = Array.from(listDiv.querySelectorAll("p")).find(
+    (p) => p.textContent === value
+  );
+  // If an input element with the same value already exists, return to skip creating the new div elements
+  if (existingInput) {
+    return;
+  }
+  const itemDiv = document.createElement("div");
+  itemDiv.className = "item";
+  itemDiv.id = `item-${listDiv.children.length}`;
+
+  // Create a <p> element with the specified value and style
+  const pElem = document.createElement("p");
+  pElem.style.width = "100%";
+  pElem.textContent = value;
+  itemDiv.style.cursor = "pointer";
+  itemDiv.style.backgroundColor = "gray";
+  pElem.style.backgroundColor = "gray";
+  itemDiv.appendChild(pElem);
+
+  // Create a "Vis" div element with the "logo vis" classes and style
+  const visDiv = document.createElement("div");
+  visDiv.className = "logo vis";
+  visDiv.style.flexDirection = "row";
+  visDiv.style.justifyContent = "flex-end";
+  visDiv.style.paddingRight = "5px";
+  const iElem = document.createElement("i");
+  iElem.className = "material-icons";
+  iElem.style.fontSize = "15px";
+  iElem.innerHTML = "&#xe63e;";
+  visDiv.appendChild(iElem);
+  itemDiv.appendChild(visDiv);
+
+  // Add the itemDiv to the listDiv
+  listDiv.appendChild(itemDiv);
+}
+
+setInterval(function () {
+  const url = `http://esp8266.local`;
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", url);
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const trimmedUrl = url.replace(/^http:\/\//i, "");
+      addTowifi(trimmedUrl);
+      console.log("yessir");
+    } else {
+      console.log("no sir " + url);
+    }
+  };
+  xhr.send();
+  for (let i = 0; i < 10; i++) {
+    const url = `http://esp8266-${i}.local`;
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const trimmedUrl = url.replace(/^http:\/\//i, "");
+        addTowifi(trimmedUrl);
+        console.log("yessir");
+      } else {
+        console.log("no sir " + url);
+      }
+    };
+    xhr.send();
+  }
+}, 2000);
+
         addToWifi("bruh");
       </script>
 
@@ -408,7 +629,7 @@
           er kun tilgængelige på computer.<br><br> Tl;dr - det virker kun på visse browsere og devices (Mobiltelefon
           virker ikke)</li>
       </ul>
-      <div style="position: absolute; top: 0; z-index: 1000000; width: 100%; height:100%; display: flex; flex-direction: row; align-items: end;">
+      <div style="position: absolute; top: 0; z-index: 1000000; width: 100%; height:100%; display: flex; flex-direction: row; align-items: end; user-select: none; pointer-events: none;">
         <div style="line-height: 12px;">
           <h1 id="name">ESP8266.local</h1>
           <p id="uptime" style="-webkit-text-fill-color: ABCAE7 !important;">Uptime: 0</p>
@@ -432,7 +653,220 @@
       <div class="text" ><p style="margin:0px; margin-left: 20px; -webkit-text-fill-color: #ABCAE7;"> *Ikke representativt af alt daten, kun lokal data</p></div>
       </div>
     </div>
-    <script src="index.js"></script>
+    <script >
+
+function addToList(value) {
+  // Create new div with class "item"
+  var newItem = document.createElement("div");
+  newItem.classList.add("item");
+
+  // Create new input element with style "width:100%" and set its value to the input string
+  var newInput = document.createElement("input");
+  newInput.style.width = "100%";
+  newInput.value = value;
+  newItem.appendChild(newInput);
+
+  // Create new div with class "logo vis edit" and text "Edit"
+  var newEdit = document.createElement("div");
+  newEdit.classList.add("logo", "vis", "edit");
+  newEdit.textContent = "Edit";
+  // Add an index to the ID of the Edit button
+  newEdit.id = "edit-" + (document.getElementsByClassName("item").length + 1);
+  newItem.appendChild(newEdit);
+
+  // Create new div with class "logo vis delete" and a child anchor tag with text "Slet"
+  var newDelete = document.createElement("div");
+  newDelete.classList.add("logo", "vis", "delete");
+  var deleteLink = document.createElement("a");
+  deleteLink.textContent = "Slet";
+  // Add an index to the ID of the Delete button
+  deleteLink.id = "delete-" + (document.getElementsByClassName("item").length + 1);
+  newDelete.appendChild(deleteLink);
+  newItem.appendChild(newDelete);
+
+  // Add the new div as a child of the div with id "list"
+  var listDiv = document.getElementById("list");
+  listDiv.appendChild(newItem);
+}
+function deleteItem(index) {
+  // Remove the div with the given index from the list
+  var itemToDelete = document.getElementById("item-" + index);
+  itemToDelete.parentNode.removeChild(itemToDelete);
+}
+function clearList() {
+  var listDiv = document.getElementById("list");
+  listDiv.innerHTML = "";
+}
+
+function sendFile(){
+  var xhttp = new XMLHttpRequest();
+  xhttp.open(
+    "GET",
+    "https://" + document.getElementById("source").value + "/voltagedata"+window.location.search,
+    true
+  );
+  xhttp.send();
+}
+
+function addLinesToList(url) {
+  clearList();
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      // Split the response into lines
+      const lines = xhr.responseText.split('\n');
+      // Loop through the lines and add them to the list
+      lines.forEach(function(line) {
+        if (line.trim() !== '') {
+          addToList(line.trim());
+        }
+      });
+    } else {
+      console.error('Request failed.  Returned status of ' + xhr.status);
+    }
+  };
+  xhr.send();
+}
+
+
+
+var chartT = new Highcharts.Chart({
+  chart: {
+    renderTo: "chart-temperature",
+    zoomType: "xy",
+    panning: {
+      enabled: true,
+      type: "xy",
+    },
+    panKey: "shift",
+  },
+  boost: {
+    useGPUTranslations: true,
+    // Chart-level boost when there are more than 5 series in the chart
+    seriesThreshold: 5,
+  },
+  title: { text: "DataGraf" },
+
+  series: [
+    {
+      boostThreshold: 10,
+      showInLegend: true,
+      name: "Voltage",
+      lineColor: "#A4A519",
+      data: [],
+    },
+    {
+      boostThreshold: 10,
+      showInLegend: true,
+      name: "Amperes",
+      lineColor: "#FF3B25",
+      data: [],
+    },
+  ],
+  plotOptions: {
+    line: { animation: false, dataLabels: { enabled: true } },
+    series: { color: "#059e8a" },
+  },
+  xAxis: { type: "datetime", dateTimeLabelFormats: { second: "%H:%M:%S" } },
+  yAxis: {
+    title: { text: "Voltage" + " " + "Amperes" },
+    min: 0,
+    minRange: 0.5,
+    //title: { text: 'Temperature (Fahrenheit)' }
+  },
+  credits: { enabled: false },
+});
+
+let queryString = window.location.search; // "?param1=value1&param2=value2"
+let params = new URLSearchParams(queryString);
+let Frekvens = params.get("Frekvens");
+if (Frekvens == null) {
+  Frekvens = 1.0;
+}
+
+let Punkter = params.get("Punkter");
+if (Punkter == null) {
+  Punkter = 500;
+}
+setInterval(function () {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var x = new Date().getTime(),
+        y = parseFloat(this.responseText);
+
+      //console.log(this.responseText);
+      if (chartT.series[0].data.length > Punkter) {
+        chartT.series[0].addPoint([x, y], true, true, true);
+      } else {
+        chartT.series[0].addPoint([x, y], true, false, true);
+      }
+      if (chartT.series[1].data.length > Punkter) {
+        chartT.series[1].addPoint([x, y], true, true, true);
+      } else {
+        chartT.series[1].addPoint([x, y], true, false, true);
+      }
+      let a = document.getElementById("frekvens").value;
+      let b = document.getElementById("punkter").value;
+      document.getElementById("tid").innerHTML =
+        parseInt(((1.0 / a) * b) / 60.0) +
+        " minutter og " +
+        (parseInt(1.0 * (1.0 / a) * b) % 60) +
+        " sekunder";
+      document.getElementById("remain").innerHTML =
+        parseInt((1.0 * (1.0 / a) * (b - chartT.series[0].data.length)) / 60) +
+        " minutter og " +
+        (parseInt(1.0 * (1.0 / a) * (b - chartT.series[0].data.length)) % 60) +
+        " sekunder";
+    }
+  };
+  //xhttp.open("GET", "http://"+window.location.hostname+"/temperature", true);
+  xhttp.open(
+    "GET",
+    "http://" + document.getElementById("source").value + "/voltagedata"+window.location.search,
+    true
+  );
+  xhttp.send();
+
+}, (1.0 / Frekvens) * 1000);
+document.getElementById("download").addEventListener("click", function () {
+  download(chartT.getCSV());
+});
+
+function download(data) {
+  // Creating a Blob for having a csv file format
+  // and passing the data with type
+  const blob = new Blob([data], { type: "text/csv" });
+
+  // Creating an object for downloading url
+  const url = window.URL.createObjectURL(blob);
+
+  // Creating an anchor(a) tag of HTML
+  const a = document.createElement("a");
+
+  // Passing the blob downloading url
+  a.setAttribute("href", url);
+
+  // Setting the anchor tag attribute for downloading
+  // and passing the download file name
+  a.setAttribute("download", "download.csv");
+
+  // Performing a download with click
+  a.click();
+}
+// Add an event listener for the Delete button
+document.addEventListener("click", function(event) {
+  if (event.target && event.target.id.startsWith("delete-")) {
+    // Get the index from the ID of the Delete button
+    var index = parseInt(event.target.id.split("-")[1]);
+    deleteItem(index);
+  }
+});
+
+addToList("bruh");
+
+    </script>
   </div>
 
 </body>

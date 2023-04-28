@@ -41,7 +41,7 @@ function clearList() {
   var listDiv = document.getElementById("list");
   listDiv.innerHTML = "";
 }
-console.log("https://" + document.getElementById("source").value + "/voltage"+window.location.search);
+
 function sendFile(){
   var xhttp = new XMLHttpRequest();
   xhttp.open(
