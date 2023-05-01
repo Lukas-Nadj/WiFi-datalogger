@@ -1,16 +1,25 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>  // Include the mDNS library
+#include <SPI.h>
+#include <SD.h>
+
 
 ESP8266WebServer server(80);
 int timer = 0;
 
 void setup() {
   Serial.begin(115200);
-  //WiFi.begin("EUC-iOT-HTX", "iOTeucHTX"); //Connect to the WiFi network
-  WiFi.begin("test", "boje1234");
-  //WiFi.begin("Telenor4053myk", "kIcob7jr4");
-  checkwificonnection();
+  WiFi.begin("Test", "boje1234");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.println("Waiting to connect");
+  }
+  Serial.println(WiFi.localIP());
+  server.on("/", handleRoot);
+  server.on("/data", Data);
+  server.on("/delete", Delete);
+  server.on("/voltagedata", voltagedata);
   server.enableCORS(true);
 
   if (MDNS.begin("esp8266")) {
@@ -19,45 +28,63 @@ void setup() {
   } else {
     Serial.println("MDNS Responder did not start");
   }
-
-  
+  server.begin();
+  if (!SD.begin(4)) {
+    Serial.println("Card failed, or not present");
+  }
 }
 
 void loop() {
-  checkwificonnection();
+  // put your main code here, to run repeatedly:
   MDNS.update();
-  if(millis()>timer+10000){
+  if (millis() > timer + 10000) {
     MDNS.announce();
     timer = millis();
   }
   server.handleClient();
 }
-void temperatur() {
-  server.send(200, "text/html", String(analogRead(A0) / 320.0, 5));
+void Data() {
+
+  File dir = SD.open("/data/");
+  int numTabs = 2;
+
+  String Filer = "";
+  while (true) {
+
+    File entry = dir.openNextFile();
+    if (!entry) {
+      // no more files
+      break;
+    }
+    if (!entry.isDirectory() && String(entry.name()).charAt(0) != '.' && String(entry.name()).charAt(1) != '_') {
+      Filer += String(entry.name()) + String("\n");
+    }
+  }
+  server.send(200, "text/plain", Filer);
 }
+
 void handleRoot() {
-  server.send(200, "text/html", "bruh");
+  server.send(200, "text/plain", "bruh");
 }
 
+void voltagedata() {
+  server.send(200, "text/plain", String(analogRead(A0) / 320.0, 5));
+}
 
-
-void checkwificonnection() {
-  bool disconnected = false;
-  if (WiFi.status() != WL_CONNECTED) {
-    disconnected = true;
+void Delete() {
+  File dir = SD.open("/data/");
+  int numTabs = 2;
+  String Filer = "";
+  while (true) {
+    File entry = dir.openNextFile();
+    if (!entry) {
+      // no more files
+      break;
+    }
+    if (String(entry.name()) == String(server.arg("filename"))) {
+      SD.remove(server.arg("filename"));
+      Serial.println(String("/data/")+String(server.arg("filename")));
+    }
   }
-  while (WiFi.status() != WL_CONNECTED) {  //Wait for connection
-    delay(500);
-    Serial.println("Waiting to connect…");
-  }
-  if (disconnected) {
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
-    server.on("/", handleRoot);
-    server.on("/temperature", temperatur);
-    server.on("/voltage", temperatur);
-    //server.on("/voltage", temperatur);
-    server.begin();
-  }
-  //Print the local IP to access the server
+  server.send(200, "text/plain", "deleted, " + String(server.arg("filename")));
 }
