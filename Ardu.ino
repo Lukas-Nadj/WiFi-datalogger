@@ -1,20 +1,21 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>  // Include the mDNS library
+#include <WiFiManager.h>  
 #include <SPI.h>
 #include <SD.h>
-
-
+WiFiManager wifiManager;
 ESP8266WebServer server(80);
 int timer = 0;
 
 void setup() {
   Serial.begin(115200);
-  WiFi.begin("Test", "boje1234");
+  /*WiFi.begin("Test", "boje1234");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.println("Waiting to connect");
-  }
+  }*/
+  wifiManager.autoConnect("esp8266 wifimanager");
   Serial.println(WiFi.localIP());
   server.on("/", handleRoot);
   server.on("/data", Data);
@@ -41,6 +42,12 @@ void loop() {
     MDNS.announce();
     timer = millis();
   }
+  /*if(digitalRead(D3)==HIGH){
+    Serial.println("pin is high");
+    wifiManager.resetSettings();
+  } else {
+    Serial.println("pin is low");
+  }*/
   server.handleClient();
 }
 void Data() {
