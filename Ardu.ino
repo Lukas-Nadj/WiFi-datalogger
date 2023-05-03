@@ -12,6 +12,9 @@ int timer = 0;
 //pointers til aktive forsøgs-fil, og Boolean optagelse
 bool optag = false;
 File loglocation;
+int frekvens = 0;
+int mål = 0;
+String sensor;
 
 
 void setup() {
@@ -54,8 +57,12 @@ void loop() {
     timer = millis();
   }
 
-  if(optag){
-    
+  if(optag&&loglocation!=null&&millis()>=mål){ // tid til at måle igen?
+    //tilføj ny linje til dokumentet og flush
+    if(sensor.equals(String("voltage"))){ //hvis vi logger volt.
+        //append "String(analogRead(A0) / 320.0, 5)"
+    } // else if humidity, etc.
+    mål = millis()+frekvens; //refresh timeren.
   }
   
 
@@ -95,9 +102,37 @@ void voltagedata() {
 }
 
 
-void toggle(){
+void toggle(){  
+  //TODO 
+    //nyt formål server arg.
+    //start og stop esp forsøg.
+    //find hvordan man logger på filen.
+  String argumentet = String(server.arg("formål"));
   
-
+  //sender staten af forsøget (er forsøget i gang eller ej?)
+  if(argumentet.equals(String("PING"))){ 
+    server.send(200, "text/plain", String(optag));  
+  } else 
+  //Starter et nyt forsøg
+  if (argumentet.equals(String("start"))){
+    optag = true;  
+    /*  IMPORTANT
+     if(sd exists("filename")){
+      server.send ("taken")
+      } else {
+        lav en ny fil og .csv header
+         loglocation = new file blabla
+      }
+    */
+    frekvens = 1000/toInt(String(server.arg("Frekvens"))); //frekvens til millisekund delay
+    mål = millis()+frekvens;
+  } else
+  //stopper asynkron måling
+  if(argumentet.equals(String("stop"))){
+    optage = false;
+    loglocation = null; //
+  }
+  
 }
 
 
